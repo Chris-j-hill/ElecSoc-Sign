@@ -1,0 +1,34 @@
+
+!!Do not delete or alter this header info!!
+
+File to list all the networks and passwords the sign is to recognise
+
+The layout of the file must follow the following example, copy and paste the template when adding new networks, 
+each line must include the words "Network:" and "Password:" including the colons and capitalisation to be recognised;
+
+Network: ExampleNetwork		Password: ExamplePassword
+
+Note the network wont be recognised if its name or password is longer than 25 characters
+
+
+
+
+Enter valid networks here;
+	//
+
+Network: UCD Wireless		Password: MyPassword
+
+
+
+	//
+
+Default: No Internet Connection Detected
+
+
+
+
+
+
+
+
+
