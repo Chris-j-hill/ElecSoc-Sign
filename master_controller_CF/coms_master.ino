@@ -47,14 +47,17 @@ void send_frame_2()
 
 void send_frame_3()
 {
-  noInterrupts();
+  //noInterrupts();
   addressToSend = 0x03;
+  data_request3 = true;
+  
 }
 
 void send_frame_4()
 {
-  noInterrupts();
+  //noInterrupts();
   addressToSend = 0x04;
+  data_request4 = true;
 }
 
 
@@ -71,12 +74,12 @@ void frame_requested(){
 
   if (data_request3 == true){
     send_frame(3);
-    data_request2= false;
+    data_request3= false;
   }
 
   if (data_request4 == true){
     send_frame(4);
-    data_request2= false;
+    data_request4= false;
   }
   
 }

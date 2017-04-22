@@ -43,8 +43,9 @@ void scroll_text_horizontal() {
     matrix.setTextColor((uint16_t)current_light_scale * matrix.ColorHSV(hue, 255, 255, true));
   else
     matrix.setTextColor(pgm_read_word(&text_colour));
+    
   matrix.setCursor(textX, dist_from_top);
-  matrix.print((str));
+  matrix.print(str);
 
   counter++;          //count trig pulses from initial set
   hue += 7;           // keep hues in sync
@@ -220,16 +221,20 @@ void mode_change_display() {      //display details of current mode
 void disp_static_text() {
 
   int offset = (TOT_WIDTH - SCREEN_NUM * 64) - TOT_WIDTH; //offset of screen from left hand side, write text from here, should be negative for all but left screen
+  dist_from_top = (TOT_HEIGHT-(text_size*text_height))/2;    //center text on screen
   if (debug) {
-    Serial.println(F("Offset: "));
-    Serial.println(offset);
+    Serial.print(F("Offset: "));
+    Serial.print(offset);
+    Serial.print(F(", \tfrom top: "));
+    Serial.println(dist_from_top);
   }
-  matrix.setTextSize(text_size);     // size 1 == 8 pixels high
-  dist_from_top = TOT_HEIGHT-(text_size*text_height)/2;    //center text on screen
-  sign_colour_calculator("blue");
-  matrix.setTextColor(matrix.Color333(colour.r, colour.g, colour.b));
-  matrix.setCursor(offset, dist_from_top);
-  matrix.print((str));
+  matrix.setTextSize(2);     // size 1 == 8 pixels high
+  matrix.setTextWrap(false);
+  //sign_colour_calculator("blue");
+  
+  matrix.setCursor(0, 0);
+  matrix.setTextColor(matrix.Color333(7,0,0));
+  matrix.print("test");
 }
 
 
