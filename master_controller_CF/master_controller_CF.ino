@@ -6,7 +6,7 @@
 
   
   void pulse_reset();             // pulse the reset line, syncronise megas
-  void pulse_reset2();            // fixed version of pulse reset, doesnt require new_flag2 high to run
+  void pulse_reset2();            // fixed version of pulse reset, doesnt require new_flag2 high to run, good for asyncronise use
   void mode_change_interrupt();   // if button pressed, call interrupt to change mode
   void increment_counter();       // keep track of where text should be on screen
  
@@ -64,8 +64,8 @@
 
 
 //Pins used on due
-int trig_pin = 42;    // update pin for screens
-int Reset = 44;        //used to sync screens
+int trig_pin = 13;    // update pin for screens
+int Reset = 15;        //used to sync screens
 int button = 22;
 int arduino[NO_ADDRESSES] = {16,17,18,19};        //interrupt pins on mega (can use any digital pins on Due)
 
@@ -152,21 +152,24 @@ void setup() {
   Serial.println(F("Serial good"));
   pinMode(trig_pin, OUTPUT);
   pinMode(Reset, OUTPUT);
-  pinMode(Reset, LOW);
+  //pinMode(Reset, LOW);
   pinMode(notifier, OUTPUT);
-   
+//  while(1){
+//    pulseReset2();
+//    delay(100); 
+//  }
   init_i2c();
   Serial.println(F("i2c init ok"));
   init_sensors();
   Serial.println(F("sensor init ok"));
   delay(100);
-  noInterrupts();
+  //noInterrupts();
   #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)          //define interrupts differently for mega and due, this code can run on either
   
-  attachInterrupt(digitalPinToInterrupt(arduino[0]), send_frame_1, RISING);
-  attachInterrupt(digitalPinToInterrupt(arduino[1]), send_frame_2, RISING);
-  //attachInterrupt(digitalPinToInterrupt(arduino[2]), send_frame_3, RISING);
-  //attachInterrupt(digitalPinToInterrupt(arduino[3]), send_frame_4, RISING);
+  //attachInterrupt(digitalPinToInterrupt(arduino[0]), send_frame_1, RISING);
+  //attachInterrupt(digitalPinToInterrupt(arduino[1]), send_frame_2, RISING);
+  attachInterrupt(digitalPinToInterrupt(arduino[2]), send_frame_3, RISING);
+  attachInterrupt(digitalPinToInterrupt(arduino[3]), send_frame_4, RISING);
   attachInterrupt(digitalPinToInterrupt(button), button_interrupt, RISING);
   
   #else
@@ -210,7 +213,11 @@ void setup() {
   
       
   pulse_reset2();          //pulse the reset line, due ready
-     
+//
+//       while(1){
+//    pulse_reset2();
+//    delay(100); 
+//  }
 }
 
 // the loop function runs over and over again forever
@@ -345,7 +352,7 @@ void pulse_reset()        //reset pulse to megas to sync displays
   {
     
     digitalWrite(Reset, HIGH);
-    delay(20);
+    delay(100);
     digitalWrite(Reset, LOW);
     new_flag = 0;
     if (debug)
@@ -360,7 +367,7 @@ void pulse_reset()        //reset pulse to megas to sync displays
 void pulse_reset2(){
    
     digitalWrite(Reset, HIGH);
-    delay(20);
+    delay(100);
     digitalWrite(Reset, LOW);
     new_flag = 0;
     if (debug)

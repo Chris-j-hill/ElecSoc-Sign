@@ -63,7 +63,7 @@ int SCREEN_NUM = 0;               // default to 0, change immediately in set_add
 int trig = 6;                    // pin to update display, essentially a clock from arduino due
 int index1 = 64 * SCREEN_NUM;      // define offset of the left most pixel on this matrix from left most pixel of the overall screen
 int flag = 0;                     // used to perform edge detection on trig signal
-int Reset = 5;                    // reset all objects to initial positions, ground signal when connected, floating otherwise
+int Reset = 15;                    // reset all objects to initial positions, ground signal when connected, floating otherwise
 int counter = 0;                  // helps for scrolling, counts the number fo pulses form the due
 bool state = true;                // when state of trig flips, run main loop
 //int mode =1;                    //define mode as scrolling, can be changed
@@ -165,22 +165,29 @@ Colour colour;    //store result from sign_colour_calculator function
 
 void setup() {
   Serial.begin(115200);
-
+  Serial.flush();
   set_address();    //function to set the address of the mega based on hardware config
 
 
   Serial.print(F("Address: "));
   Serial.println(ADDRESS);
 
-
-
   Serial.flush();
   // timing clock pins
   pinMode(trig, INPUT);   //clock signal to increment step
-  pinMode(Reset, INPUT);  //start scrolling at same time
-
+  pinMode(Reset, INPUT);  //reset postions to start animation at some time
+  Serial.println(digitalRead(Reset));
   Serial.println(F("Begin wait"));
-  while (!digitalRead(Reset)) {}  //wait for reset pulse
+  int alpha = 0;
+  delay(500);
+//  while (alpha > 30000 || alpha < 15000){  //wait for reset pulse
+//    alpha = pulseIn(Reset, HIGH, 100);
+//  }
+//while(1);
+
+while(!(digitalRead(Reset))){
+  //Serial.println(digitalRead(Reset));
+  }
   Serial.println(F("Due ready, begin startup"));
 
   //matrix initialisation
