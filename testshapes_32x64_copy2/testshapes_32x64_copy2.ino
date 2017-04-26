@@ -174,21 +174,18 @@ void setup() {
 
   Serial.flush();
   // timing clock pins
-  pinMode(trig, INPUT);   //clock signal to increment step
-  pinMode(Reset, INPUT);  //reset postions to start animation at some time
-  Serial.println(digitalRead(Reset));
-  Serial.println(F("Begin wait"));
-  int alpha = 0;
-  delay(500);
-//  while (alpha > 30000 || alpha < 15000){  //wait for reset pulse
-//    alpha = pulseIn(Reset, HIGH, 100);
-//  }
-//while(1);
+  pinMode(trig, INPUT_PULLUP);   //clock signal to increment step
+  pinMode(Reset, INPUT_PULLUP);  //reset postions to start animation at some time
 
-while(!(digitalRead(Reset))){
+  Serial.println(F("Begin wait for due, send character to force start"));
+  int alpha = 0;
+
+
+while(digitalRead(Reset) && Serial.available ==0){    //wait for reset pulse from due or manual begin
   //Serial.println(digitalRead(Reset));
   }
   Serial.println(F("Due ready, begin startup"));
+
 
   //matrix initialisation
   Serial.println(F("Matrix Setup"));
@@ -302,13 +299,13 @@ void set_address() {
   int temp2 = digitalRead(45);
 
 
-  if (temp1 == LOW && temp2 == LOW) {
+  if (temp1 == LOW && temp2 == LOW) { 
     ADDRESS = 1;
     SCREEN_NUM = 0;
   }
-  else if (temp1 == LOW && temp2 == HIGH) {
-    ADDRESS = 2;
-    SCREEN_NUM = 1;
+  else if (temp1 == LOW && temp2 == HIGH) { 
+    ADDRESS = 2; 
+    SCREEN_NUM = 1; 
   }
   else if (temp1 == HIGH && temp2 == LOW) {
     ADDRESS = 3;

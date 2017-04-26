@@ -156,6 +156,7 @@ void error_check() {        // function to error check frame, common to requeste
 
 void receiveEvent(int bytes)                   //interrupt to read in new string
 {
+//  delay(10);
   int timeOut2 = millis();
   frame_length = 150;
   if (debug) {
@@ -203,7 +204,10 @@ void receiveEvent(int bytes)                   //interrupt to read in new string
       }
     }
 
-    else flag1 = 1;   //break while loop
+    else{
+      flag1 = 1;   //break while loop
+      Serial.println(F("Break from receive interrupt, frame broken"));
+    }
 
     //    else
     //    {
@@ -220,7 +224,7 @@ void receiveEvent(int bytes)                   //interrupt to read in new string
     //      }
     //    }
 
-    if (flag1 == 1 && digitalRead(Request_text_pin) != HIGH && !bad_frame) { // full frame recieved but not requested, call function
+    if (flag1 == 1 && digitalRead(Request_text_pin) == LOW && !bad_frame) { // full frame recieved but not requested, call function
 
       flag1 = 0;    //set back to zero to avoid confusion
 

@@ -8,7 +8,7 @@
 void bouncing_balls() {
   // Bounce three balls around
   int radius = 5;
-  if (digitalRead(Reset) == LOW) {       //only draw circles once reset enabled, otherwise reset all positions
+  if (digitalRead(Reset) == HIGH) {       //only draw circles once reset enabled, otherwise reset all positions
     for (byte i = 0; i < 3; i++) {
       // Draw 'ball'
 
@@ -60,20 +60,20 @@ void scroll_text_horizontal() {
   }
 
   // Move text left (w/wrap), increase hue
-  if (textX <= textMin || (digitalRead(Reset) == HIGH && reset_flag == false)) {
+  if (textX <= textMin || (digitalRead(Reset) == LOW && reset_flag == false)) {
     textX = matrix.width() + 1;
     counter = 0;
     reset_flag = true;
     if (debug)
       Serial.println(F("reset positions"));
   }
-  else if (reset_flag == true && digitalRead(Reset) == LOW) {
+  else if (reset_flag == true && digitalRead(Reset) == HIGH) {
     reset_flag == false;
   }
 
   if (hue >= 1536) hue -= 1536;
 
-  if (digitalRead(Reset) == HIGH) hue = 0;
+  if (digitalRead(Reset) == LOW) hue = 0;
 }
 
 
@@ -119,14 +119,14 @@ void scroll_text_vertical() {
 
 
     // reset text pos
-    else if ((textY) < textMinY || digitalRead(Reset) == HIGH) {
+    else if ((textY) < textMinY || digitalRead(Reset) == LOW) {
       textX = matrix.height();    //reset position to just off bottom of screen
       counter = 0;                //reset counter
     }
 
     if (hueY >= 1536) hueY -= 1536;
 
-    if (digitalRead(Reset) == HIGH) hueY = 0;  */
+    if (digitalRead(Reset) == LOW) hueY = 0;  */
 }
 
 
